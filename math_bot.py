@@ -6,6 +6,9 @@ TOKEN = os.getenv("TOKEN_TG")
 if not TOKEN:
     raise ValueError("Error: TOKEN environment variable is not set.")
 
+
+
+# الأسئلة الكاملة
 questions = {
     "1": ("🍎", "1", ["1", "2", "3"]),
     "2": ("🍎🍎", "2", ["1", "2", "3"]),
@@ -14,6 +17,7 @@ questions = {
     "5": ("🍎🍎🍎🍎🍎", "5", ["4", "5", "6"]),
 }
 
+# عرض القائمة الأولى
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton(f"🔢 العدد {i}", callback_data=f"start_{i}")]
@@ -24,39 +28,44 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
+# عند الضغط على زر عدد أو إجابة
 async def handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     data = query.data
 
+    # بدء سؤال محدد
     if data.startswith("start_"):
         number = data.split("_")[1]
         await send_question(query, number)
 
+    # إجابة الطالب
     elif data.startswith("a_"):
         correct, chosen, current = data.split("_")[1:]
         if chosen == correct:
-            await query.edit_message_text("✅ إجابة صحيحة! أحسنت!")
+            await query.message.reply_text("✅ إجابة صحيحة! أحسنت!")
             next_q = str(int(current) + 1)
             if next_q in questions:
                 await send_question(query, next_q)
             else:
                 await query.message.reply_text("🎉 انتهت التمارين! ممتاز 👏")
         else:
-            await query.answer("❌ خطأ، حاول مرة أخرى.", show_alert=True)
-            await send_question(query, current)  # إعادة نفس السؤال
+            await query.message.reply_text("❌ خطأ، حاول مرة أخرى.")
+            await send_question(query, current)  # أعد نفس السؤال
 
+# توليد سؤال
 async def send_question(query, number):
     content, correct, options = questions[number]
     buttons = [
         [InlineKeyboardButton(opt, callback_data=f"a_{correct}_{opt}_{number}")]
         for opt in options
     ]
-    await query.edit_message_text(
+    await query.message.reply_text(
         f"{content}\nكم عدد التفاحات؟",
         reply_markup=InlineKeyboardMarkup(buttons)
     )
 
+# التشغيل
 def main():
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
@@ -65,4 +74,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
 

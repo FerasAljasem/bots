@@ -1,8 +1,18 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
+
 import os
+
 TOKEN = os.getenv("TOKEN")
+
+# مثال: بدء البوت باستخدام التوكن
+from telegram.ext import Updater
+
+updater = Updater(token=TOKEN)
+dispatcher = updater.dispatcher
+
+# باقي كود البوت...
 
 
 # الأسئلة الكاملة
@@ -71,4 +81,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 

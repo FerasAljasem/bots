@@ -1,7 +1,9 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
-TOKEN = "8414219571:AAG2sNmHJtcKG-F-bLSnMcLYKYo-_gBx4d8"
+import os
+TOKEN = os.getenv("TOKEN")
+
 
 # الأسئلة الكاملة
 questions = {
@@ -69,3 +71,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

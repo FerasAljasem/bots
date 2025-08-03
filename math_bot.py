@@ -2,7 +2,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 import os
 
-TOKEN = os.getenv("TOKEN")
+TOKEN = os.getenv("TOKEN_TG")
 if not TOKEN:
     raise ValueError("Error: TOKEN environment variable is not set.")
 
@@ -65,3 +65,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
